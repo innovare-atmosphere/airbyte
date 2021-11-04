@@ -46,8 +46,7 @@ resource "digitalocean_droplet" "www-airbyte" {
   }
 
   provisioner "file" {
-    content      = templatefile("docker-compose.yml.tpl", {
-    })
+    source      = "docker-compose.yml.tpl"
     destination = "/root/airbyte/docker-compose.yml"
   }
 
