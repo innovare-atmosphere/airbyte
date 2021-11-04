@@ -1,0 +1,5 @@
+name: airbyte-0.30.28-alpha-docker
+description: Deploy 0.30.28-alpha docker image of Airbyte on your Digital Ocean droplet
+categories:
+- IT
+- Administration
