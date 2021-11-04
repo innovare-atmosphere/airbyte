@@ -8,7 +8,7 @@ variable "domain" {
 
 resource "random_password" "database_password" {
   length           = 16
-  special          = true
+  special          = false
   override_special = "_%@"
 }
 
