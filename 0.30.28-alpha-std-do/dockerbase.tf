@@ -13,10 +13,10 @@ resource "random_password" "database_password" {
 }
 
 
-resource "digitalocean_droplet" "www-mattermost" {
+resource "digitalocean_droplet" "www-airbyte" {
   #This has pre installed docker
   image = "docker-20-04"
-  name = "www-mattermost"
+  name = "www-airbyte"
   region = "nyc3"
   size = "s-1vcpu-1gb"
   ssh_keys = [
@@ -40,32 +40,22 @@ resource "digitalocean_droplet" "www-mattermost" {
       "sleep 5s",
       "apt install -y nginx",
       "apt install -y python3-certbot-nginx",
-      # create mattermost installation directory
-      "mkdir /root/mattermost",
-      "mkdir /root/mattermost/config",
-      "chown -R 2000:2000 /root/mattermost/config",
-      "mkdir /root/mattermost/data",
-      "chown -R 2000:2000 /root/mattermost/data",
-      "mkdir /root/mattermost/logs",
-      "chown -R 2000:2000 /root/mattermost/logs",
-      "mkdir /root/mattermost/plugins",
-      "chown -R 2000:2000 /root/mattermost/plugins",
-      "mkdir /root/mattermost/client_plugins",
-      "chown -R 2000:2000 /root/mattermost/client_plugins",
+      # create airbyte installation directory
+      "mkdir /root/airbyte",
     ]
   }
 
   provisioner "file" {
     content      = templatefile("docker-compose.yml.tpl", {
     })
-    destination = "/root/mattermost/docker-compose.yml"
+    destination = "/root/airbyte/docker-compose.yml"
   }
 
   provisioner "file" {
     content      = templatefile(".env.tpl", {
       database_password = var.database_password != "" ? var.database_password : random_password.database_password.result
     })
-    destination = "/root/mattermost/.env"
+    destination = "/root/airbyte/.env"
   }
 
   provisioner "file" {
@@ -79,7 +69,7 @@ resource "digitalocean_droplet" "www-mattermost" {
     inline = [
       "export PATH=$PATH:/usr/bin",
       # run compose
-      "cd /root/mattermost",
+      "cd /root/airbyte",
       "docker-compose up -d",
       "rm /etc/nginx/sites-enabled/default",
       "systemctl restart nginx",

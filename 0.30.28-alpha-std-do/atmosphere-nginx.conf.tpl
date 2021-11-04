@@ -11,7 +11,7 @@ server {
         proxy_set_header        Forwarded   "";
         proxy_set_header        X-Real-IP   "";
         proxy_set_header        X-Forwarded-Host "";
-        proxy_pass http://localhost:8065/;
+        proxy_pass http://localhost:8000/;
     }
 
 
