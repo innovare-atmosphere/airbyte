@@ -6,6 +6,10 @@ variable "domain" {
     default = ""
 }
 
+variable "webmaster_email" {
+    default = ""
+}
+
 resource "random_password" "database_password" {
   length           = 16
   special          = false
@@ -74,6 +78,7 @@ resource "digitalocean_droplet" "www-airbyte" {
       "systemctl restart nginx",
       "ufw allow http",
       "ufw allow https",
+      "%{if var.domain!= ""}certbot --nginx --non-interactive --agree-tos --domains ${var.domain} %{if var.webmaster_email!= ""} --redirect --email ${var.webmaster_email} %{ else } --register-unsafely-without-email %{ endif } %{ else }echo NOCERTBOT%{ endif }"
     ]
   }
 }

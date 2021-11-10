@@ -10,12 +10,6 @@ terraform {
 resource "tls_private_key" "pk" {
   algorithm = "RSA"
   rsa_bits  = 4096
-  provisioner "local-exec" { # Create "myKey.pem" to your computer!!
-    command = "echo '${tls_private_key.pk.private_key_pem}' > ./myKey"
-  }
-  provisioner "local-exec" {
-    command = "echo '${tls_private_key.pk.public_key_openssh}' > ./myKey.pub"
-  }
 }
 
 variable "do_token" {
